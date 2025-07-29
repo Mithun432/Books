@@ -38,7 +38,7 @@ jobs:
         export PATH=$PATH:$PWD/bin
 
         # Install Dummy Sampler plugin
-        bin/PluginsManagerCMD.sh install dummy
+        bin/PluginsManagerCMD.sh install jpgc-dummy
 
         # Store path for next steps
         echo "JMETER_PATH=$PWD" >> $GITHUB_ENV
