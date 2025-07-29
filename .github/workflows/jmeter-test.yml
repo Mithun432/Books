@@ -47,7 +47,7 @@ jobs:
     - name: Run JMeter Test Plan
       run: |
         export PATH=$PATH:$JMETER_PATH/bin
-        jmeter -n -t BatchTestBooks.jmx -l results.csv
+        jmeter -n -t BatchTestBooks.jmx -l results.csv -j jmeter.log
 
     - name: Upload Result File
       uses: actions/upload-artifact@v4
