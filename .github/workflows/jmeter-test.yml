@@ -29,7 +29,7 @@ jobs:
         jmeter -n -t BatchTestBooks.jmx -l results.csv
 
     - name: Upload Result File
-      uses: actions/upload-artifact@v3
-      with:
-        name: jmeter-results
-        path: result.jtl
+  uses: actions/upload-artifact@v4
+  with:
+    name: jmeter-results
+    path: results.csv
