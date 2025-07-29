@@ -15,7 +15,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up JMeter and Install Dummy Sampler Plugin
+        - name: Set up JMeter and Install Dummy Sampler Plugin
       run: |
         sudo apt update
         sudo apt install -y openjdk-11-jdk unzip wget
@@ -25,20 +25,24 @@ jobs:
         tar -xzf apache-jmeter-5.5.tgz
         cd apache-jmeter-5.5
 
-        # Download JMeter Plugins Manager
-        wget https://jmeter-plugins.org/get/ -O lib/ext/jmeter-plugins-manager.jar
+        # Download Plugins Manager JAR
+        wget https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.11/jmeter-plugins-manager-1.11.jar -O lib/ext/jmeter-plugins-manager.jar
 
-        # Install Plugin Manager Command Tool
+        # Download cmdrunner (required by PluginsManagerCMD.sh)
+        wget https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.3/cmdrunner-2.3.jar -O lib/cmdrunner-2.3.jar
+
+        # Install Plugin Manager CMD tool
         java -cp lib/ext/jmeter-plugins-manager.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
 
-        # Export path so JMeter commands are available in the next steps
+        # Export path so JMeter commands are available
         export PATH=$PATH:$PWD/bin
 
         # Install Dummy Sampler plugin
         bin/PluginsManagerCMD.sh install dummy
 
-        # Save current path for later steps
+        # Store path for next steps
         echo "JMETER_PATH=$PWD" >> $GITHUB_ENV
+
 
     - name: Run JMeter Test Plan
       run: |
