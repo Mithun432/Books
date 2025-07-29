@@ -1,0 +1,35 @@
+name: Run JMeter Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-jmeter:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JMeter
+      run: |
+        sudo apt update
+        sudo apt install -y openjdk-11-jdk
+        wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz
+        tar -xzf apache-jmeter-5.5.tgz
+        export PATH=$PATH:$PWD/apache-jmeter-5.5/bin
+
+    - name: Run JMeter Test Plan
+      run: |
+        export PATH=$PATH:$PWD/apache-jmeter-5.5/bin
+        jmeter -n -t test-plan.jmx -l result.jtl
+
+    - name: Upload Result File
+      uses: actions/upload-artifact@v3
+      with:
+        name: jmeter-results
+        path: result.jtl
